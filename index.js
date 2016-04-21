@@ -31,11 +31,26 @@ function validate(phone) {
     else return phone;
     return localized;
   }
-  
+
   function toInternational(phone) {
     let international;
     if (!validate(phone)) return false;
     if (/^(0|2)/.test(phone)) international = phone.replace(/^(0|2)/, '+251');
     else return phone;
     return international;
+  }
+
+  function isMobile(phone) {
+    if (!validate(phone)) return false;
+    const parsedPhone = parse(phone);
+    if (/^(2519|09)/.test(parsedPhone)) return true;
+    return false;
+  }
+  
+  function isLandline(phone) {
+    if (!validate(phone)) return false;
+    const parsedPhone = parse(phone);
+    // add regional numbers
+    if (/^(25111|011)/.test(parsedPhone)) return true;
+    return false;
   }
