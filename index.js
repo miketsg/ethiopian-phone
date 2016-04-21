@@ -16,10 +16,26 @@ function validate(phone) {
     const intFormat = /^(251)(\d{3})(\d{2})(\d{2})(\d{2})$/;
     const parsedPhone = parse(phone);
     let readable, n;
-  
+
     [localFormat, intFormat].forEach((f) => {
       if (f.test(parsedPhone)) readable = parsedPhone.replace(f, '$1 $2 $3 $4 $5'); n = readable;
        if (/^0[^9]/.test(readable)) readable = `${n.slice(0, 4).replace(/\s/, '')} ${n.slice(4)}`;
     });
     return readable;
+  }
+
+  function localize(phone) {
+    let localized;
+    if (!validate(phone)) return false;
+    if (/^\+?251/.test(phone)) localized = phone.replace(/^\+?251/, '0');
+    else return phone;
+    return localized;
+  }
+  
+  function toInternational(phone) {
+    let international;
+    if (!validate(phone)) return false;
+    if (/^(0|2)/.test(phone)) international = phone.replace(/^(0|2)/, '+251');
+    else return phone;
+    return international;
   }
