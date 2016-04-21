@@ -10,3 +10,16 @@ function validate(phone) {
     if (!validate(phone)) return false;
     return phone;
   }
+
+  function format(phone) {
+    const localFormat = /^(0\d{1})(\d{2})(\d{2})(\d{2})(\d{2})$/;
+    const intFormat = /^(251)(\d{3})(\d{2})(\d{2})(\d{2})$/;
+    const style = [localFormat, intFormat];
+    const parsedPhone = parse(phone);
+    let readable;
+  
+    style.forEach((f) => {
+      if (f.test(parsedPhone)) readable = parsedPhone.replace(f, '$1 $2 $3 $4 $5');
+    });
+    return readable;
+  }
