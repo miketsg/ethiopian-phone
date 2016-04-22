@@ -6,24 +6,26 @@ function validate(phone) {
   }
 
   function parse(phone) {
-    phone = phone.replace(/\D/g, '');
-    if (!validate(phone)) return false;
-    return phone;
+    const parsed = phone.replace(/\D/g, '');
+    if (!validate(parsed)) return false;
+    return parsed;
   }
-
+  
   function format(phone) {
     const localFormat = /^(0\d{1})(\d{2})(\d{2})(\d{2})(\d{2})$/;
     const intFormat = /^(251)(\d{3})(\d{2})(\d{2})(\d{2})$/;
-    const parsedPhone = parse(phone);
+    const parsed = parse(phone);
     let readable, n;
-
+  
+    // needs cleanup
     [localFormat, intFormat].forEach((f) => {
-      if (f.test(parsedPhone)) readable = parsedPhone.replace(f, '$1 $2 $3 $4 $5'); n = readable;
-       if (/^0[^9]/.test(readable)) readable = `${n.slice(0, 4).replace(/\s/, '')} ${n.slice(4)}`;
+      if (f.test(parsed)) readable = parsed.replace(f, '$1 $2 $3 $4 $5'); n = readable;
+      if (/^0[^9]/.test(readable)) readable = `${n.slice(0, 4).replace(/\s/, '')} ${n.slice(4)}`;
     });
+  
     return readable;
   }
-
+  
   function localize(phone) {
     let localized;
     if (!validate(phone)) return false;
@@ -31,7 +33,7 @@ function validate(phone) {
     else return phone;
     return localized;
   }
-
+  
   function toInternational(phone) {
     let international;
     if (!validate(phone)) return false;
@@ -39,7 +41,7 @@ function validate(phone) {
     else return phone;
     return international;
   }
-
+  
   function isMobile(phone) {
     if (!validate(phone)) return false;
     const parsedPhone = parse(phone);
