@@ -26,12 +26,12 @@ function validate(number) {
     return readable;
   }
   
-  function localize(number) {
-    let localized;
+  function toLocal(number) {
+    let local;
     const phone = parse(number);
-    if (/^\+?251/.test(phone)) localized = phone.replace(/^\+?251/, '0');
+    if (/^\+?251/.test(phone)) local = phone.replace(/^\+?251/, '0');
     else return number;
-    return localized;
+    return local;
   }
   
   function toInternational(number) {
@@ -53,3 +53,7 @@ function validate(number) {
     if (/^(25111|011)/.test(phone)) return true;
     return false;
   }
+
+  module.exports = {
+  validate, parse, format, toLocal, toInternational, isMobile, isLandline,
+};
