@@ -7,10 +7,10 @@ function validate(number) {
 
   function parse(number) {
     const phone = number.toString().replace(/\D/g, '');
-    if (!validate(phone)) return false;
+    if (!validate(phone)) return new Error('Invalid PhoneNumber');
     return phone;
   }
-  
+
   function format(number) {
     const localFormat = /^(0\d{1})(\d{2})(\d{2})(\d{2})(\d{2})$/;
     const intFormat = /^(251)(\d{3})(\d{2})(\d{2})(\d{2})$/;
@@ -54,6 +54,16 @@ function validate(number) {
     return false;
   }
 
+  function isLocal(number) {
+    const phone = parse(number);
+    return /^0/.test(phone)
+  }
+
+  function isInternational(number) {
+    const phone = parse(number);
+    return /^\+?251/.test(phone);
+  }
+
   module.exports = {
-  validate, parse, format, toLocal, toInternational, isMobile, isLandline,
+  validate, parse, format, toLocal, toInternational, isMobile, isLandline, isLocal, isInternational
 };
