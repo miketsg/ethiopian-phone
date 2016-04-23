@@ -1,12 +1,22 @@
+function padZero(number) {
+    let phone;
+    const { length } = number.toString();
+    const isNumber = Number.isInteger(number);
+  
+    if (isNumber && length === 9) return phone = `0${number}`;
+    if (isNumber && length === 12 || typeof number === 'string') {
+      return phone = number.toString().replace(/\D/g, '');
+    } return false;
+  }
+
 function validate(number) {
-    if (!number) return false;
-    const phone = number.toString().replace(/[ +\-()]/g, '');
+    let phone = padZero(number);
     const pattern = /^(251\d{9}|09\d{8}|011\d{7})$/g;
     return pattern.test(phone);
   }
 
   function parse(number) {
-    const phone = number.toString().replace(/\D/g, '');
+    const phone = (padZero(number)) ? padZero(number).replace(/\D/g, '') : false;
     if (!validate(phone)) return new Error('Invalid PhoneNumber');
     return phone;
   }
