@@ -1,6 +1,6 @@
 /**
  * Adds zero in front of the input if the type is number
- * @param {(string|number)} number - Phone number
+ * @param {(string|number)} number - Accepts both string and number type
  * @returns {(string|boolean)}
  */
 function padZero(number) {
@@ -10,7 +10,7 @@ function padZero(number) {
 
     if (isNumber && length === 9) return phone = `0${number}`;
     if (isNumber && length === 12 || typeof number === 'string') {
-        return phone = number.toString().replace(/\D/g, '');
+        return phone = number.toString().replace(/[ +\-()]/g, '');
     } return false;
 }
 
@@ -26,7 +26,7 @@ function validate(number) {
 }
 
 /**
-* Cleans up phone number
+* Cleans up | normalizes phone number
 * @param {string} number
 * @returns {string}
 */
@@ -77,10 +77,8 @@ function toLocal(number) {
 function toInternational(number) {
     let international;
     const phone = parse(number);
-    if (/^(0|2)/.test(phone)) international = phone.replace(/^(0|2)/, '+251');
-    else return phone;
-    return international;
-}
+    return (/^0|251/.test(phone)) ? international = phone.replace(/^0|251/, '+251') : phone;
+  }
 
 /**
  * Checks whether given number is a mobile sim
