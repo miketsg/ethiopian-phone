@@ -1,3 +1,5 @@
+const areaInfo = require('./areacode');
+
 /**
  * Adds zero in front of the input if the type is number
  * @param {(string|number)} number - Accepts both string and number type
@@ -61,6 +63,41 @@ function format(number) {
 }
 
 /**
+ * Retrieve location data of given phone number
+ * @param {string} number
+ * @returns {string}
+ */
+function findArea(number) {
+    const phone = parse(number);
+    if (!validate(phone)) return new Error('Invalid Phonenumber');
+  
+    const areaCode = phone.substring(1, 3);
+    const zoneCode = phone.substring(3, 4);
+    const siteCode = phone.substring(3, 6);
+    const mobileCode = phone.substring(2, 4);
+  
+    let region = areaInfo.AA_REGION[zoneCode];
+    let site = `${areaInfo.AA_SITES[siteCode]}, `;
+  
+    try {
+      if (/^091[145678]/.test(phone)) {
+        return region = areaInfo.MOBILE_CODE[mobileCode];
+      }
+  
+      if (areaCode !== '11') {
+        region = areaInfo.REGION[areaCode];
+        site = areaInfo[region][siteCode];
+        site = (site === undefined) ? '' : `${site}, `;
+      }
+    } catch (err) {
+      return 'Unable to find area information';
+    }
+  
+    const area = `${site}${region}`;
+    return area;
+  }
+
+/**
  * Converts phone number to local Ethiopian format
  * @param {string} number
  * @returns {string}
@@ -95,7 +132,7 @@ function isMobile(number) {
   return false;
 }
 /**
- * Checks whether given number is a landline
+ * Checks whether given number is a landline phone
  * @param {string} number
  * @returns {boolean}
  */
@@ -125,5 +162,5 @@ function isInternational(number) {
 }
 
 module.exports = {
-    validate, parse, format, toLocal, toInternational, isMobile, isLandline, isLocal, isInternational
+ validate, parse, format, findArea, toLocal, toInternational, isMobile, isLandline, isLocal, isInternational,
 };
