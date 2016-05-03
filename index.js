@@ -6,16 +6,16 @@ const areaInfo = require('./areacode');
  * @returns {(string|boolean)}
  */
 function addZero(number) {
-    let phone;
-    const { length } = number.toString();
-    const isNumber = Number.isInteger(number);
-  
-    if (isNumber && length === 9) return phone = `0${number}`;
-    if (isNumber && length === 12 || typeof number === 'string') {
-      return phone = number.toString().replace(/[ +\-()]/g, '');
-    }
-    return false;
+  let phone;
+  const { length } = number.toString();
+  const isNumber = Number.isInteger(number);
+
+  if (isNumber && length === 9) return (phone = `0${number}`);
+  if ((isNumber && length === 12) || typeof number === 'string') {
+    return phone = number.toString().replace(/[ +\-()]/g, '')
   }
+  return false;
+}
 
 /**
  * Checks whether given number is a valid Ethiopian phone number
@@ -63,41 +63,6 @@ function format(number) {
 }
 
 /**
- * Retrieve location data of given phone number
- * @param {string} number
- * @returns {string}
- */
-function findArea(number) {
-    const phone = parse(number);
-    if (!validate(phone)) return new Error('Invalid Phonenumber');
-  
-    const areaCode = phone.substring(1, 3);
-    const zoneCode = phone.substring(3, 4);
-    const siteCode = phone.substring(3, 6);
-    const mobileCode = phone.substring(2, 4);
-  
-    let region = areaInfo.AA_REGION[zoneCode];
-    let site = `${areaInfo.AA_SITES[siteCode]}, `;
-  
-    try {
-      if (/^091[145678]/.test(phone)) {
-        return region = areaInfo.MOBILE_CODE[mobileCode];
-      }
-  
-      if (areaCode !== '11') {
-        region = areaInfo.REGION[areaCode];
-        site = areaInfo[region][siteCode];
-        site = (site === undefined) ? '' : `${site}, `;
-      }
-    } catch (err) {
-      return 'Unable to find area information';
-    }
-  
-    const area = `${site}${region}`;
-    return area;
-  }
-
-/**
  * Converts phone number to local Ethiopian format
  * @param {string} number
  * @returns {string}
@@ -118,7 +83,46 @@ function toLocal(number) {
 function toInternational(number) {
   let international;
   const phone = parse(number);
-  return (/^0|251/.test(phone)) ? international = phone.replace(/^0|251/, '+251') : phone;
+  return /^0|251/.test(phone)
+    ? (international = phone.replace(/^0|251/, '+251'))
+    : phone;
+}
+
+/**
+ * Retrieve location data of given phone number
+ * @param {string} number
+ * @returns {string}
+ */
+function findArea(number) {
+  const phone = toLocal(number);
+  if (!validate(phone)) return new Error('Invalid Phonenumber');
+
+  const areaCode = phone.substring(1, 3);
+  const zoneCode = phone.substring(3, 4);
+  const siteCode = phone.substring(3, 6);
+  const mobileCode = phone.substring(2, 4);
+
+  let region = areaInfo.AA_REGION[zoneCode];
+  let site = `${areaInfo.AA_SITES[siteCode]}, `;
+
+  try {
+    if (/^091[145678]/.test(phone)) {
+      return (region = areaInfo.MOBILE_CODE[mobileCode]);
+    }
+
+    if (areaCode !== '11') {
+      region = areaInfo.REGION[areaCode];
+      site = areaInfo[region][siteCode];
+    }
+
+    site = (site === undefined) ? '' : `${site}, `;
+    if (region === undefined) throw new Error();
+  } catch (err) {
+    return 'Unable to find area information';
+  }
+
+  const area = `${site}${region}`;
+  return area;
 }
 
 /**
@@ -162,5 +166,5 @@ function isInternational(number) {
 }
 
 module.exports = {
- validate, parse, format, findArea, toLocal, toInternational, isMobile, isLandline, isLocal, isInternational,
+ validate, parse, format, toLocal, toInternational, findArea, isMobile, isLandline, isLocal, isInternational,
 };
