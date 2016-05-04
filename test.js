@@ -1,44 +1,43 @@
 const assert = require('assert');
-const etphone = require('../index.js');
+const etPhone = require('../index.js');
 
-describe('etphone', () => {
+describe('etPhone', () => {
   describe('Validate phone number', () => {
     it('Should validate mobile phone number ', () => {
-      assert.equal(etphone.validate('0923686213'), true);
-      assert.equal(etphone.validate('09236862'), false);
-      assert.equal(etphone.validate('092368621377'), false);
+      assert.equal(etPhone.validate('0923686213'), true);
+      assert.equal(etPhone.validate('09236862'), false);
+      assert.equal(etPhone.validate('092368621377'), false);
     });
 
     it('Should validate landline number', () => {
-      //add rural landline number
-      assert.equal(etphone.validate('0115205476'), true);
-      assert.equal(etphone.validate('2511147453'), false);
+      // add rural landline number
+      assert.equal(etPhone.validate('0115205476'), true);
+      assert.equal(etPhone.validate('2511147453'), false);
     });
 
     it('Should return false for Non-Ethiopian phone number', () => {
-      assert.equal(etphone.validate('+59372823889'), false);
+      assert.equal(etPhone.validate('+59372823889'), false);
     });
 
     it('Should accept and validate number and string data type', () => {
-      assert.equal(etphone.validate(0923686213), true);
-      assert.equal(etphone.validate('0923686213'), true);
+      assert.equal(etPhone.validate(0923686213), true);
+      assert.equal(etPhone.validate('0923686213'), true);
     });
 
     it('Should validate phone number in an international format', () => {
-      assert.equal(etphone.validate('+251923686213'), true);
-      assert.equal(etphone.validate('+251115205476'), true);
-      assert.equal(etphone.validate('+25192368621'), false);
+      assert.equal(etPhone.validate('+251923686213'), true);
+      assert.equal(etPhone.validate('+251115205476'), true);
+      assert.equal(etPhone.validate('+25192368621'), false);
     });
 
     it('Should validate phone number with whitespace', () => {
-      assert.equal(etphone.validate('09 23 68 62 13'), true);
+      assert.equal(etPhone.validate('09 23 68 62 13'), true);
     });
 
     it('Should validate phone number with non-numeric character', () => {
-      assert.equal(etphone.validate('+(251)9-23-68-62-13'), true);
-      assert.equal(etphone.validate('0923686Y13'), false);
+      assert.equal(etPhone.validate('+(251)9-23-68-62-13'), true);
+      assert.equal(etPhone.validate('0923686Y13'), false);
     });
-
   });
 
   describe('Parse phone number', () => {
@@ -50,7 +49,6 @@ describe('etphone', () => {
     it('Should raise an error on invalid phone number', () => {
       assert.equal(etPhone.parse('09 23 68 62'), 'Error: Invalid PhoneNumber');
     });
-
   });
 
   describe('Format phone number', () => {
@@ -68,6 +66,24 @@ describe('etphone', () => {
 
     it('Should raise an error on invalid phone number', () => {
       assert.equal(etPhone.format('0923683434462'), 'Error: Invalid PhoneNumber');
+    });
+  });
+
+  describe('Find the address of a given phone number', () => {
+    it('Should find the region of a given phone number in Ethiopia', () => {
+      assert.equal(etPhone.findArea('0223319750'), 'Asela, South East Ethiopia');
+      assert.equal(etPhone.findArea('0587764412'), 'Dejen, North West Ethiopia');
+      assert.equal(etPhone.findArea('0465513883'), 'Wollayta, South Ethiopia');
+    });
+
+    it('Should find the specific area if it is an Addis Ababa landline number', () => {
+      assert.equal(etPhone.findArea('0113215476'), 'Mekanisa, South West Addis Ababa');
+      assert.equal(etPhone.findArea('0112702784'), 'Asko, Western Addis Ababa');
+    });
+
+    it('Should find the approximate location of where a  mobile sim card was bought', () => {
+      assert.equal(etPhone.findArea('0918458597'), 'North West Ethiopia');
+      assert.equal(etPhone.findArea('0916771836'), 'South Ethiopia');
     });
   });
 
@@ -118,5 +134,4 @@ describe('etphone', () => {
       assert.equal(etPhone.isInternational('+251115205476'), true);
     });
   });
-
 });
