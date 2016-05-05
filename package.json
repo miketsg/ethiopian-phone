@@ -1,18 +1,18 @@
 {
-    "name": "etphone",
-    "version": "1.0.0",
-    "description": "Library for processing ethiotelecom phone numbers.",
-    "main": "index.js",
-    "scripts": {
-      "test":  "mocha"
+  "name": "etphone",
+  "version": "1.2.1",
+  "description": "A simple library of helper utilities to validate, parse and format Ethiopian phone numbers..",
+  "main": "index.js",
+  "scripts": {
+    "test":  "mocha"
+},
+"devDependencies": {
+  "mocha": "2.3.4"
+},
+  "repository": {
+      "type": "git",
+      "url": "git+https://github.com/miketsg/etphone"
   },
-  "devDependencies": {
-    "mocha": "2.3.4"
-  },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/miketsg/etphone"
-    },
-    "author": "Michael Tsegaye",
-    "license": "MIT"
+  "author": "Michael Tsegaye",
+  "license": "MIT"
 }

@@ -24,7 +24,7 @@ function addZero(number) {
  */
 function validate(number) {
   let phone = addZero(number);
-  const pattern = /^(251\d{9}|09\d{8}|011\d{7})$/g;
+  const pattern = /^(251\d{9}|09\d{8}|011\d{7}|0(2[25]|3[34]|4[67]|5[78])\d{7})$/g;
   return pattern.test(phone);
 }
 
@@ -103,7 +103,7 @@ function findArea(number) {
   const mobileCode = phone.substring(2, 4);
 
   let region = areaInfo.AA_REGION[zoneCode];
-  let site = `${areaInfo.AA_SITES[siteCode]}, `;
+  let site = areaInfo.AA_SITES[siteCode];
 
   try {
     if (/^091[145678]/.test(phone)) {
