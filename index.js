@@ -5,46 +5,46 @@ const areaInfo = require('./areacode');
  * @param {(string|number)} number - Accepts both string and number type
  * @returns {(string|boolean)}
  */
-function addZero(number) {
+
+const addZero = number => {
   let phone;
   const { length } = number.toString();
   const isNumber = Number.isInteger(number);
 
-  if (isNumber && length === 9) return (phone = `0${number}`);
+  if (isNumber && length === 9) return phone = `0${number}`;
   if ((isNumber && length === 12) || typeof number === 'string') {
-    return phone = number.toString().replace(/[ +\-()]/g, '')
-  }
-  return false;
-}
+    return phone = number.toString().replace(/[ +\-()]/g, '');
+  } return false;
+};
 
 /**
- * Checks whether given number is a valid Ethiopian phone number
+ * Checks whether given input is a valid Ethiopian phone number
  * @param {string} number - Phone number
  * @returns {boolean}
  */
-function validate(number) {
-  let phone = addZero(number);
+const validate = number => {
+  const phone = addZero(number);
   const pattern = /^(251\d{9}|09\d{8}|011\d{7}|0(2[25]|3[34]|4[67]|5[78])\d{7})$/g;
   return pattern.test(phone);
-}
+};
 
 /**
  * Cleans up | normalizes phone number
  * @param {string} number
  * @returns {string}
  */
-function parse(number) {
-  const phone = addZero(number) ? addZero(number).replace(/\D/g, '') : false;
+const parse = number => {
+  const phone = (addZero(number)) ? addZero(number).replace(/\D/g, '') : false;
   if (!validate(phone)) return new Error('Invalid Phonenumber');
   return phone;
-}
+};
 
 /**
- * Converts given phone number into a readable format
+ * Converts phone number into a readable format
  * @param {string} number
  * @returns {string}
  */
-function format(number) {
+const format = number => {
   const localFormat = /^(0\d)(\d{2})(\d{2})(\d{2})(\d{2})$/;
   const internationalFormat = /^(251)(\d{3})(\d{2})(\d{2})(\d{2})$/;
   const phone = parse(number);
@@ -58,56 +58,48 @@ function format(number) {
     n = readable;
     if (/^0[^9]/.test(readable)) readable = `${n.slice(0, 4).replace(/\s/, '')} ${n.slice(4)}`;
   });
-
   return readable;
-}
+};
 
 /**
  * Converts phone number to local Ethiopian format
  * @param {string} number
  * @returns {string}
  */
-function toLocal(number) {
-  let local;
-  const phone = parse(number);
-  if (/^\+?251/.test(phone)) local = phone.replace(/^\+?251/, '0');
-  else return number;
-  return local;
-}
+const toLocal = number => {
+  let phone = parse(number);
+  return (/^\+?251/.test(phone)) ? phone = phone.replace(/^\+?251/, '0') : phone;
+};
 
 /**
  * Converts phone number to International format
  * @param {string} number
- * @returns {string}
+ * @returns {string} international phone number starting with +251
  */
-function toInternational(number) {
-  let international;
-  const phone = parse(number);
-  return /^0|251/.test(phone)
-    ? (international = phone.replace(/^0|251/, '+251'))
-    : phone;
-}
+const toInternational = number => {
+  let phone = parse(number);
+  return (/^0|251/.test(phone)) ? phone = phone.replace(/^0|251/, '+251') : phone;
+};
 
 /**
  * Retrieve location data of given phone number
  * @param {string} number
- * @returns {string}
+ * @returns {string} returns area of given phone number
  */
-function findArea(number) {
+const findArea = number => {
   const phone = toLocal(number);
   if (!validate(phone)) return new Error('Invalid Phonenumber');
 
   const areaCode = phone.substring(1, 3);
-  const zoneCode = phone.substring(3, 4);
   const siteCode = phone.substring(3, 6);
   const mobileCode = phone.substring(2, 4);
 
-  let region = areaInfo.AA_REGION[zoneCode];
+  let region = areaInfo.AA_REGION[phone.substring(3, 4)];
   let site = areaInfo.AA_SITES[siteCode];
 
   try {
     if (/^091[145678]/.test(phone)) {
-      return (region = areaInfo.MOBILE_CODE[mobileCode]);
+      return region = areaInfo.MOBILE_CODE[mobileCode];
     }
 
     if (areaCode !== '11') {
@@ -123,48 +115,37 @@ function findArea(number) {
 
   const area = `${site}${region}`;
   return area;
-}
+};
 
 /**
- * Checks whether given number is a mobile sim
+ * Checks whether given number is a mobile phone
  * @param {string} number
  * @returns {boolean}
  */
-function isMobile(number) {
-  const phone = parse(number);
-  if (/^(2519|09)/.test(phone)) return true;
-  return false;
-}
+const isMobile = number => /^(2519|09)/.test(parse(number));
+
 /**
  * Checks whether given number is a landline phone
  * @param {string} number
  * @returns {boolean}
  */
-function isLandline(number) {
-  const phone = parse(number);
-  if (/^(25111|011)/.test(phone)) return true;
-  return false;
-}
+// add regional numbers
+const isLandline = number => /^(25111|011)/.test(parse(number));
 
 /**
  * Checks whether given number is in local/Ethiopian format
  * @param {string} number
  * @returns {boolean}
  */
-function isLocal(number) {
-  const phone = parse(number);
-  return /^0/.test(phone);
-}
+const isLocal = number => /^0/.test(parse(number));
+
 /**
  * Checks whether given number is in international format
  * @param {string} number
  * @returns {boolean}
  */
-function isInternational(number) {
-  const phone = parse(number);
-  return /^\+?251/.test(phone);
-}
+const isInternational = number => /^\+?251/.test(parse(number));
 
 module.exports = {
- validate, parse, format, toLocal, toInternational, findArea, isMobile, isLandline, isLocal, isInternational,
+  validate, parse, format, toLocal, toInternational, findArea, isMobile, isLandline, isLocal, isInternational,
 };
