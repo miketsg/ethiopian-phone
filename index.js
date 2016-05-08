@@ -8,13 +8,14 @@ const areaInfo = require('./areacode');
 
 const addZero = number => {
   let phone;
-  const { length } = number.toString();
-  const isNumber = Number.isInteger(number);
+  if (typeof number === 'string') return number.replace(/[ +\-()]/g, '');
 
-  if (isNumber && length === 9) return phone = `0${number}`;
-  if ((isNumber && length === 12) || typeof number === 'string') {
-    return phone = number.toString().replace(/[ +\-()]/g, '');
-  } return false;
+  if (Number.isInteger(number)) {
+    const checkLength = x => number.toString().length === x;
+    if (checkLength(9)) return phone = `0${number}`;
+    if (checkLength(12)) return phone = number.toString();
+  }
+  return false;
 };
 
 /**
