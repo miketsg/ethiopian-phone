@@ -47,7 +47,7 @@ describe('etPhone', () => {
     });
 
     it('Should raise an error on invalid phone number', () => {
-      assert.equal(etPhone.parse('09 23 68 62'), 'Error: Invalid PhoneNumber');
+      assert.equal(etPhone.parse('09 23 68 62'), 'Error: Invalid Phonenumber');
     });
   });
 
@@ -65,7 +65,7 @@ describe('etPhone', () => {
     });
 
     it('Should raise an error on invalid phone number', () => {
-      assert.equal(etPhone.format('0923683434462'), 'Error: Invalid PhoneNumber');
+      assert.equal(etPhone.format('0923683434462'), 'Error: Invalid Phonenumber');
     });
   });
 

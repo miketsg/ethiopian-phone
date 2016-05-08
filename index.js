@@ -28,6 +28,18 @@ const validate = number => {
   return pattern.test(phone);
 };
 
+const reportError = number => {
+  const phone = number;
+  const err = ['Not Ethiopian phone number', 'Phone number too long', 'Phone number too short'];
+
+  const long = (x, y) => x.test(phone) && phone.length > y;
+  const short = (x, y) => x.test(phone) && phone.length < y;
+
+  if (!/^(0|251)[123459]/.test(phone)) return new TypeError(err[0]);
+  if (long(/^0/, 10) || long(/^251/, 12)) return new TypeError(err[1]);
+  if (short(/^0/, 10) || short(/^251/, 12)) return new TypeError(err[2]);
+};
+
 /**
  * Cleans up | normalizes phone number
  * @param {string} number
@@ -35,7 +47,7 @@ const validate = number => {
  */
 const parse = number => {
   const phone = (addZero(number)) ? addZero(number).replace(/\D/g, '') : false;
-  if (!validate(phone)) return new Error('Invalid Phonenumber');
+  if (!validate(phone)) phone = reportError(phone);
   return phone;
 };
 
@@ -50,7 +62,7 @@ const format = number => {
   const phone = parse(number);
   let readable, n;
 
-  if (!validate(phone)) return new Error('Invalid Phonenumber');
+  if (!validate(phone)) return phone;
 
   // needs cleanup
   [localFormat, internationalFormat].forEach((f) => {
@@ -88,7 +100,7 @@ const toInternational = number => {
  */
 const findArea = number => {
   const phone = toLocal(number);
-  if (!validate(phone)) return new Error('Invalid Phonenumber');
+  if (!validate(phone)) return phone;
 
   const areaCode = phone.substring(1, 3);
   const siteCode = phone.substring(3, 6);
@@ -129,7 +141,8 @@ const isMobile = number => /^(2519|09)/.test(parse(number));
  * @param {string} number
  * @returns {boolean}
  */
-const isLandline = number => /^(0|251)(11|2[25]|3[34]|4[67]|5[78])/.test(parse(number));
+// add regional numbers
+const isLandline = number => /^(25111|011)/.test(parse(number));
 
 /**
  * Checks whether given number is in local/Ethiopian format
