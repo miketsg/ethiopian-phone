@@ -5,18 +5,18 @@ describe('etPhone', () => {
   describe('Validate phone number', () => {
     it('Should validate mobile phone number ', () => {
       assert.equal(etPhone.validate('0923686213'), true);
-      assert.equal(etPhone.validate('09236862'), false);
-      assert.equal(etPhone.validate('092368621377'), false);
+      assert.equal(etPhone.validate('09236862'), 'TypeError: Phone number too short');
+      assert.equal(etPhone.validate('092368621377'), 'TypeError: Phone number too long');
     });
 
     it('Should validate landline number', () => {
       // add rural landline number
       assert.equal(etPhone.validate('0115205476'), true);
-      assert.equal(etPhone.validate('2511147453'), false);
+      assert.equal(etPhone.validate('2511147453'), 'TypeError: Phone number too short');
     });
 
-    it('Should return false for Non-Ethiopian phone number', () => {
-      assert.equal(etPhone.validate('+59372823889'), false);
+    it('Should return error for Non-Ethiopian phone number', () => {
+      assert.equal(etPhone.validate('+59372823889'), 'TypeError: Not Ethiopian phone number');
     });
 
     it('Should accept and validate number and string data type', () => {
@@ -27,7 +27,7 @@ describe('etPhone', () => {
     it('Should validate phone number in an international format', () => {
       assert.equal(etPhone.validate('+251923686213'), true);
       assert.equal(etPhone.validate('+251115205476'), true);
-      assert.equal(etPhone.validate('+25192368621'), false);
+      assert.equal(etPhone.validate('+25192368621'), 'TypeError: Phone number too short');
     });
 
     it('Should validate phone number with whitespace', () => {
@@ -36,7 +36,7 @@ describe('etPhone', () => {
 
     it('Should validate phone number with non-numeric character', () => {
       assert.equal(etPhone.validate('+(251)9-23-68-62-13'), true);
-      assert.equal(etPhone.validate('0923686Y13'), false);
+      assert.equal(etPhone.validate('0923686Y13'), 'TypeError: Not Ethiopian phone number');
     });
   });
 
@@ -47,7 +47,7 @@ describe('etPhone', () => {
     });
 
     it('Should raise an error on invalid phone number', () => {
-      assert.equal(etPhone.parse('09 23 68 62'), 'Error: Invalid Phonenumber');
+      assert.equal(etPhone.parse('09 23 68 62'), 'TypeError: Phone number too short');
     });
   });
 
@@ -65,7 +65,7 @@ describe('etPhone', () => {
     });
 
     it('Should raise an error on invalid phone number', () => {
-      assert.equal(etPhone.format('0923683434462'), 'Error: Invalid Phonenumber');
+      assert.equal(etPhone.format('0923683434462'), 'TypeError: Phone number too long');
     });
   });
 
@@ -81,10 +81,15 @@ describe('etPhone', () => {
       assert.equal(etPhone.findArea('0112702784'), 'Asko, Western Addis Ababa');
     });
 
-    it('Should find the approximate location of where a  mobile sim card was bought', () => {
+    it('Should find the approximate location of where a mobile sim card was bought', () => {
       assert.equal(etPhone.findArea('0918458597'), 'North West Ethiopia');
       assert.equal(etPhone.findArea('0916771836'), 'South Ethiopia');
     });
+
+    it('Should return not found message when specific area code not found', () => {
+      assert.equal(etPhone.findArea('0922784726'), 'Unable to find area information');
+    });
+
   });
 
   describe('Convert to local format', () => {
