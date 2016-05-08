@@ -24,7 +24,7 @@ const addZero = number => {
  */
 const validate = number => {
   const phone = addZero(number);
-  const pattern = /^(251\d{9}|09\d{8}|011\d{7}|0(2[25]|3[34]|4[67]|5[78])\d{7})$/g;
+  const pattern = /^((0|251)9\d{8}|(0|251)(11|2[25]|3[34]|4[67]|5[78])\d{7})$/g;
   return pattern.test(phone);
 };
 
@@ -129,8 +129,7 @@ const isMobile = number => /^(2519|09)/.test(parse(number));
  * @param {string} number
  * @returns {boolean}
  */
-// add regional numbers
-const isLandline = number => /^(25111|011)/.test(parse(number));
+const isLandline = number => /^(0|251)(11|2[25]|3[34]|4[67]|5[78])/.test(parse(number));
 
 /**
  * Checks whether given number is in local/Ethiopian format
