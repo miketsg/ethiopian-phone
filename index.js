@@ -47,7 +47,7 @@ const reportError = number => {
  * @returns {string}
  */
 const parse = number => {
-  const phone = (addZero(number)) ? addZero(number).replace(/\D/g, '') : false;
+  let phone = (addZero(number)) ? addZero(number).replace(/\D/g, '') : false;
   if (!validate(phone)) phone = reportError(phone);
   return phone;
 };
@@ -60,7 +60,7 @@ const parse = number => {
 const format = number => {
   const localFormat = /^(0\d)(\d{2})(\d{2})(\d{2})(\d{2})$/;
   const internationalFormat = /^(251)(\d{3})(\d{2})(\d{2})(\d{2})$/;
-  const phone = parse(number);
+  let phone = parse(number);
   let readable, n;
 
   if (!validate(phone)) return phone;
@@ -111,12 +111,10 @@ const findArea = number => {
   let site = areaInfo.AA_SITES[siteCode];
 
   try {
-    if (/^091[145678]/.test(phone)) {
-      return region = areaInfo.MOBILE_CODE[mobileCode];
-    }
+    if (/^091[145678]/.test(phone)) return region = areaInfo.MOBILE_CODE[mobileCode];
 
     if (areaCode !== '11') {
-      region = areaInfo.REGION[areaCode];
+      region = areaInfo.ET_REGION[areaCode];
       site = areaInfo[region][siteCode];
     }
 

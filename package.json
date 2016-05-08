@@ -1,7 +1,7 @@
 {
   "name": "etphone",
-  "version": "1.3.1",
-  "description": "A simple library of helper utilities to validate, parse and format Ethiopian phone numbers..",
+  "version": "1.3.2",
+  "description": "A simple library of helper utilities to validate, parse and format Ethiopian phone numbers.",
   "main": "index.js",
   "scripts": {
     "test":  "mocha"

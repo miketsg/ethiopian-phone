@@ -1,5 +1,5 @@
 const areaInfo = {
-  REGION: {
+  ET_REGION: {
     11: 'Addis Ababa',
     22: 'South East Ethiopia',
     25: 'East Ethiopia',
