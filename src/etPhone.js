@@ -1,4 +1,4 @@
-const areaInfo = require('./areacode');
+const areaInfo = require('./areaCode');
 
 /**
  * Adds zero in front of the input if the type is number
