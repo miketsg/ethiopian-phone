@@ -5,7 +5,8 @@
   "main": "dist/etPhone.js",
   "scripts": {
     "build": "webpack --mode=production",
-    "test":  "mocha"
+    "test":  "mocha",
+    "coverage": "nyc --reporter=text --reporter=lcov npm test"
 },
 "author": "Michael Tsegaye",
 "license": "MIT",
@@ -22,6 +23,7 @@
   "eslint": "^2.1.2",
   "eslint-loader": "^1.1.0",
   "mocha": "^2.3.4",
+  "nyc":"^8.3.0",
   "webpack": "^1.12.9"
 }
 }
