@@ -1,33 +1,29 @@
 const assert = require('assert');
-const etPhone = require('../src/etphone');;
+const etPhone = require('../src/etPhone');
 
 describe('etPhone', () => {
   describe('Validate phone number', () => {
     it('Should validate mobile phone number ', () => {
       assert.equal(etPhone.validate('0923686213'), true);
-      assert.equal(etPhone.validate('09236862'), 'TypeError: Phone number too short');
-      assert.equal(etPhone.validate('092368621377'), 'TypeError: Phone number too long');
+      assert.equal(etPhone.validate('09236862'), false);
+      assert.equal(etPhone.validate('092368621377'), false);
     });
 
     it('Should validate landline number', () => {
-      // add rural landline number
       assert.equal(etPhone.validate('0115205476'), true);
-      assert.equal(etPhone.validate('2511147453'), 'TypeError: Phone number too short');
+      assert.equal(etPhone.validate('2511147453'), false);
+      assert.equal(etPhone.validate('0465513883'), true);
     });
 
-    it('Should return error for Non-Ethiopian phone number', () => {
-      assert.equal(etPhone.validate('+59372823889'), 'TypeError: Not Ethiopian phone number');
-    });
-
-    it('Should accept and validate number and string data type', () => {
-      assert.equal(etPhone.validate(0923686213), true);
+    it('Should accept and validate string and number data type', () => {
+      assert.equal(etPhone.validate(parseFloat('0923686213')), true);
+      assert.equal(etPhone.validate(parseFloat('251923686213')), true);
       assert.equal(etPhone.validate('0923686213'), true);
     });
-
     it('Should validate phone number in an international format', () => {
       assert.equal(etPhone.validate('+251923686213'), true);
       assert.equal(etPhone.validate('+251115205476'), true);
-      assert.equal(etPhone.validate('+25192368621'), 'TypeError: Phone number too short');
+      assert.equal(etPhone.validate('+25192368621'), false);
     });
 
     it('Should validate phone number with whitespace', () => {
@@ -36,7 +32,7 @@ describe('etPhone', () => {
 
     it('Should validate phone number with non-numeric character', () => {
       assert.equal(etPhone.validate('+(251)9-23-68-62-13'), true);
-      assert.equal(etPhone.validate('0923686Y13'), 'TypeError: Not Ethiopian phone number');
+      assert.equal(etPhone.validate('092&^3686Y13'), false);
     });
   });
 
@@ -47,7 +43,9 @@ describe('etPhone', () => {
     });
 
     it('Should raise an error on invalid phone number', () => {
-      assert.equal(etPhone.parse('09 23 68 62'), 'TypeError: Phone number too short');
+      assert.equal(etPhone.parse('09236862'), 'TypeError: Phone number too short');
+      assert.equal(etPhone.parse('092368621377'), 'TypeError: Phone number too long');
+      assert.equal(etPhone.parse('+59372823889'), 'TypeError: Not Ethiopian phone number');
     });
   });
 
@@ -74,6 +72,7 @@ describe('etPhone', () => {
       assert.equal(etPhone.findArea('0223319750'), 'Asela, South East Ethiopia');
       assert.equal(etPhone.findArea('0587764412'), 'Dejen, North West Ethiopia');
       assert.equal(etPhone.findArea('0465513883'), 'Wollayta, South Ethiopia');
+      assert.equal(etPhone.findArea('0348398472'), 'North Ethiopia');
     });
 
     it('Should find the specific area if it is an Addis Ababa landline number', () => {
@@ -90,6 +89,9 @@ describe('etPhone', () => {
       assert.equal(etPhone.findArea('0922784726'), 'Unable to find area information');
     });
 
+    it('Should return error message when phone is invalid', () => {
+      assert.equal(etPhone.findArea('093478392817'), 'TypeError: Phone number too long');
+    });
   });
 
   describe('Convert to local format', () => {
