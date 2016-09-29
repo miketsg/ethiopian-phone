@@ -1,7 +1,7 @@
 const areaInfo = require('./areaCode');
 
 /**
- * Adds zero in front of the input if the type is number
+ * Adds zero in front of the input if type is number
  * @param {(string|number)} number - Accepts both string and number type
  * @returns {(string|boolean)}
  */
@@ -29,6 +29,11 @@ const validate = number => {
   return pattern.test(phone);
 };
 
+/**
+ * Raises error if given phone number is incorrect
+ * @param {string} number - phone number
+ * @returns {Error}
+ */
 const reportError = number => {
   const phone = number;
   const err = ['Not Ethiopian phone number', 'Phone number too long', 'Phone number too short'];
@@ -42,12 +47,13 @@ const reportError = number => {
 };
 
 /**
- * Cleans up | normalizes phone number
+ * Cleans up & normalizes phone number
  * @param {string} number
  * @returns {string}
  */
 const parse = number => {
-  let phone = (addZero(number)) ? addZero(number).replace(/\D/g, '') : false;
+  let phone;
+  if (addZero(number)) phone = addZero(number).replace(/\D/g, '');
   if (!validate(phone)) phone = reportError(phone);
   return phone;
 };
@@ -103,11 +109,13 @@ const findArea = number => {
   const phone = toLocal(number);
   if (!validate(phone)) return phone;
 
-  const areaCode = phone.substring(1, 3);
-  const siteCode = phone.substring(3, 6);
-  const mobileCode = phone.substring(2, 4);
+  const sub = (x, y) => phone.substring(x, y);
+  const [areaCode, siteCode, mobileCode] = [sub(1, 3), sub(3, 6), sub(2, 4)];
 
-  let region = areaInfo.AA_REGION[phone.substring(3, 4)];
+  let addisRegion = areaInfo.AA_REGION[sub(3, 4)];
+  addisRegion = (addisRegion === undefined) ? '' : `${addisRegion} `;
+
+  let region = `${addisRegion}${areaInfo.ET_REGION[areaCode]}`;
   let site = areaInfo.AA_SITES[siteCode];
 
   try {
@@ -119,13 +127,12 @@ const findArea = number => {
     }
 
     site = (site === undefined) ? '' : `${site}, `;
-    if (region === undefined) throw new Error();
+
   } catch (err) {
     return 'Unable to find area information';
   }
 
-  const area = `${site}${region}`;
-  return area;
+  return site + region;
 };
 
 /**
