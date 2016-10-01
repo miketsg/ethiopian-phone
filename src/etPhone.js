@@ -64,19 +64,16 @@ const parse = number => {
  * @returns {string}
  */
 const format = number => {
-  const localFormat = /^(0\d)(\d{2})(\d{2})(\d{2})(\d{2})$/;
-  const internationalFormat = /^(251)(\d{3})(\d{2})(\d{2})(\d{2})$/;
-  let phone = parse(number);
-  let readable, n;
+  const styles = [/^(0\d)(\d{2})(\d{2})(\d{2})(\d{2})$/, /^(251)(\d{3})(\d{2})(\d{2})(\d{2})$/]; // Local & International
+  const landlineFormat = /^(0[^9]\d)(\d{3})(\d{2})(\d{2})$/;
+  const phone = parse(number);
 
+  let readable;
   if (!validate(phone)) return phone;
 
-  // needs cleanup
-  [localFormat, internationalFormat].forEach((f) => {
-    if (f.test(phone)) readable = phone.replace(f, '$1 $2 $3 $4 $5');
-    n = readable;
-    if (/^0[^9]/.test(readable)) readable = `${n.slice(0, 4).replace(/\s/, '')} ${n.slice(4)}`;
-  });
+  styles.forEach((f) => { if (f.test(phone)) readable = phone.replace(f, '$1 $2 $3 $4 $5'); });
+  if (/^0[^9]/.test(readable)) readable = phone.replace(landlineFormat, '$1 $2 $3 $4');
+
   return readable;
 };
 
