@@ -38,13 +38,14 @@ describe('etPhone', () => {
 
   describe('Parse phone number', () => {
     it('Should remove non-numeric characters ', () => {
-      assert.equal(etPhone.parse('011520547FR6'), '0115205476');
       assert.equal(etPhone.parse('+(251)9-23-68-62-13'), '251923686213');
     });
 
     it('Should raise an error on invalid phone number', () => {
       assert.equal(etPhone.parse('09236862'), 'TypeError: Phone number too short');
+      assert.equal(etPhone.parse('2519236862'), 'TypeError: Phone number too short');
       assert.equal(etPhone.parse('092368621377'), 'TypeError: Phone number too long');
+      assert.equal(etPhone.parse('25192368621377'), 'TypeError: Phone number too long');
       assert.equal(etPhone.parse('+59372823889'), 'TypeError: Not Ethiopian phone number');
     });
   });
@@ -55,14 +56,14 @@ describe('etPhone', () => {
     });
 
     it('Should format landline number', () => {
-      assert.equal(etPhone.format('0115205476'), '011 5 20 54 76');
+      assert.equal(etPhone.format('0115205476'), '011 520 54 76');
     });
 
     it('Should format international phone number', () => {
       assert.equal(etPhone.format('251923686213'), '251 923 68 62 13');
     });
 
-    it('Should raise an error on invalid phone number', () => {
+    it('Should raise an error on formatting invalid phone number', () => {
       assert.equal(etPhone.format('0923683434462'), 'TypeError: Phone number too long');
     });
   });

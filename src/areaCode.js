@@ -11,12 +11,12 @@ const areaInfo = {
     58: 'North West Ethiopia',
   },
   AA_REGION: {
-    1: 'Northern Addis Ababa',
-    2: 'Western Addis Ababa',
-    3: 'South West Addis Ababa',
-    4: 'South Addis Ababa',
-    5: 'Central Addis Ababa',
-    6: 'Eastern Addis Ababa',
+    1: 'Northern',
+    2: 'Western',
+    3: 'South West',
+    4: 'South',
+    5: 'Central',
+    6: 'Eastern',
   },
   AA_SITES: {
     111: 'Arada I',

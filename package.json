@@ -1,6 +1,6 @@
 {
   "name": "etphone",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "Set of helper utilities to validate, parse and format Ethiopian phone numbers.",
   "main": "dist/etPhone.js",
   "scripts": {
