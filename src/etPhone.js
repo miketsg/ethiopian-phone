@@ -5,15 +5,13 @@ const areaInfo = require('./areaCode');
  * @param {(string|number)} number - Accepts both string and number type
  * @returns {(string|boolean)}
  */
-
 const addZero = number => {
-  let phone;
   if (typeof number === 'string') return number.replace(/[ +\-()]/g, '');
 
   if (Number.isInteger(number)) {
     const checkLength = x => number.toString().length === x;
-    if (checkLength(9)) return phone = `0${number}`;
-    if (checkLength(12)) return phone = number.toString();
+    if (checkLength(9)) return `0${number}`;
+    if (checkLength(12)) return number.toString(); // ^251
   }
   return false;
 };
@@ -24,14 +22,13 @@ const addZero = number => {
  * @returns {boolean}
  */
 const validate = number => {
-  const phone = addZero(number);
-  const pattern = /^((0|251)9\d{8}|(0|251)(11|2[25]|3[34]|4[67]|5[78])\d{7})$/g;
-  return pattern.test(phone);
+  const pattern = /^((0|251)9\d{8}|(0|251)(11|2[25]|3[34]|4[67]|5[78])\d{7})$/;
+  return pattern.test(addZero(number));
 };
 
 /**
  * Raises error if given phone number is incorrect
- * @param {string} number - phone number
+ * @param {string} number - Phone number
  * @returns {Error}
  */
 const reportError = number => {
@@ -48,20 +45,20 @@ const reportError = number => {
 
 /**
  * Cleans up & normalizes phone number
- * @param {string} number
- * @returns {string}
+ * @param {string} number - Phone number
+ * @returns {string} - Normalized phone number
  */
 const parse = number => {
   let phone;
-  if (addZero(number)) phone = addZero(number).replace(/\D/g, '');
+  if (addZero(number)) phone = addZero(number).replace(/\D/, '');
   if (!validate(phone)) phone = reportError(phone);
   return phone;
 };
 
 /**
- * Converts phone number into a readable format
- * @param {string} number
- * @returns {string}
+ * Converts phone number into readable format
+ * @param {string} number - Phone number
+ * @returns {string} - Readable phone number
  */
 const format = number => {
   const styles = [/^(0\d)(\d{2})(\d{2})(\d{2})(\d{2})$/, /^(251)(\d{3})(\d{2})(\d{2})(\d{2})$/]; // Local & International
@@ -78,29 +75,29 @@ const format = number => {
 };
 
 /**
- * Converts phone number to local Ethiopian format
- * @param {string} number
- * @returns {string}
+ * Converts phone number to local | Ethiopian format
+ * @param {string} number - Phone number
+ * @returns {string} - local format phone number
  */
 const toLocal = number => {
-  let phone = parse(number);
-  return (/^\+?251/.test(phone)) ? phone = phone.replace(/^\+?251/, '0') : phone;
+  const phone = parse(number);
+  return /^\+?251/.test(phone) ? phone.replace(/^\+?251/, '0') : phone;
 };
 
 /**
  * Converts phone number to International format
- * @param {string} number
- * @returns {string} international phone number starting with +251
+ * @param {string} number - Phone number
+ * @returns {string} - International phone number starting with +251
  */
 const toInternational = number => {
-  let phone = parse(number);
-  return (/^0|251/.test(phone)) ? phone = phone.replace(/^0|251/, '+251') : phone;
+  const phone = parse(number);
+  return /^0|251/.test(phone) ? phone.replace(/^0|251/, '+251') : phone;
 };
 
 /**
  * Retrieve location data of given phone number
- * @param {string} number
- * @returns {string} returns area of given phone number
+ * @param {string} number - Phone number
+ * @returns {string} - Area info of given phone number
  */
 const findArea = number => {
   const phone = toLocal(number);
@@ -116,7 +113,7 @@ const findArea = number => {
   let site = areaInfo.AA_SITES[siteCode];
 
   try {
-    if (/^091[145678]/.test(phone)) return region = areaInfo.MOBILE_CODE[mobileCode];
+    if (/^091[145678]/.test(phone)) return areaInfo.MOBILE_CODE[mobileCode];
 
     if (areaCode !== '11') {
       region = areaInfo.ET_REGION[areaCode];
@@ -134,29 +131,28 @@ const findArea = number => {
 
 /**
  * Checks whether given number is a mobile phone
- * @param {string} number
+ * @param {string} number - Phone number
  * @returns {boolean}
  */
 const isMobile = number => /^(2519|09)/.test(parse(number));
 
 /**
  * Checks whether given number is a landline phone
- * @param {string} number
+ * @param {string} number - Phone number
  * @returns {boolean}
  */
-// add regional numbers
-const isLandline = number => /^(25111|011)/.test(parse(number));
+const isLandline = number => /^(0|251)(11|2[25]|3[34]|4[67]|5[78])/.test(parse(number));
 
 /**
- * Checks whether given number is in local/Ethiopian format
- * @param {string} number
+ * Checks whether given number is in local | Ethiopian format
+ * @param {string} number - Phone number
  * @returns {boolean}
  */
 const isLocal = number => /^0/.test(parse(number));
 
 /**
  * Checks whether given number is in international format
- * @param {string} number
+ * @param {string} number - Phone number
  * @returns {boolean}
  */
 const isInternational = number => /^\+?251/.test(parse(number));
