@@ -1,31 +1,23 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'production',
-  entry: './src/etPhone.js',
+  context: __dirname + '/src',
+  entry: './etphone.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'etPhone.js',
+    filename: 'etphone.js',
     library: 'etPhone',
     libraryTarget: 'umd',
     umdNamedDefine: true,
+    globalObject: "typeof self !== 'undefined' ? self : this",
   },
   module: {
     loaders: [
       {
         test: /(\.js)$/,
-        loader: 'babel',
+        loader: 'babel-loader',
         exclude: /(node_modules)/
       },
-      {
-        test: /(\.js)$/,
-        loader: "eslint-loader",
-        exclude: /node_modules/
-      }
     ]
-  },
-  resolve: {
-    modules: [path.resolve('./src')],
-    extensions: ['.js'],
-  },
+  }
 };

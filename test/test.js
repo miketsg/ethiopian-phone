@@ -1,5 +1,5 @@
 const assert = require('assert');
-const etPhone = require('../src/etPhone');
+const etPhone = require('../src/etphone');
 
 describe('etPhone', () => {
   describe('Validate phone number', () => {
