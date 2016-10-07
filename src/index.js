@@ -1,9 +1,9 @@
 const areaInfo = require('./areaCode');
 
 /**
- * Adds zero in front of the input if type is number
- * @param {(string|number)} number - Accepts both string and number type
- * @returns {(string|boolean)}
+ * Adds zero in front of the input if its type is number
+ * @param {string|number} number - Accepts both string and number
+ * @returns {string|boolean}
  */
 const addZero = number => {
   if (typeof number === 'string') return number.replace(/[ +\-()]/g, '');
