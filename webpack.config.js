@@ -1,8 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  context: __dirname + '/src',
-  entry: './index.js',
+  entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'ethiopian-phone.js',
@@ -12,12 +11,14 @@ module.exports = {
     globalObject: "typeof self !== 'undefined' ? self : this",
   },
   module: {
-    loaders: [
+    rules: [
       {
-        test: /(\.js)$/,
-        loader: 'babel-loader',
-        exclude: /(node_modules)/
-      },
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        }
+      }
     ]
-  }
+  },
 };
