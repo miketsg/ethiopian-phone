@@ -2,6 +2,8 @@
 
 > Set of  helper utilities to validate, parse and format Ethiopian phone numbers.
 
+[![Build Status](https://travis-ci.com/miketsg/ethiopian-phone.svg?token=hbpFVuPfeNDtbbQ7Gkv9&branch=master)](https://travis-ci.com/miketsg/ethiopian-phone)
+[![Coverage Status](https://coveralls.io/repos/github/miketsg/ethiopian-phone/badge.svg?branch=master)](https://coveralls.io/github/miketsg/ethiopian-phone?branch=master)
 ## Features
 
 * Ethiopian phone number validation and formatting.
