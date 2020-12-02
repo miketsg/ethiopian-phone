@@ -5,7 +5,7 @@ module.exports = {
   entry: './index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'etphone.js',
+    filename: 'ethiopian-phone.js',
     library: 'etPhone',
     libraryTarget: 'umd',
     umdNamedDefine: true,

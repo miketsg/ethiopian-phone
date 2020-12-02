@@ -1,4 +1,5 @@
-# etPhone
+# Ethiopian-phone
+
 > Set of  helper utilities to validate, parse and format Ethiopian phone numbers.
 
 ## Features
@@ -14,7 +15,7 @@
 ## Install
 
 ```sh
-npm install etphone
+npm install ethiopian-phone
 ```
 
 ## Import
@@ -22,25 +23,25 @@ npm install etphone
 **ES6 module**
 
 ```js
-import { validate, findArea } from 'etphone'
+import { validate, findArea } from 'ethiopian-phone'
 ```
 
 **Node.JS**
 
 ```js
-const etPhone = require('etphone')
+const etPhone = require('ethiopian-phone')
 ```
 
 **Import to the browser from a CDN**
 
 ```html
-<script src="https://unpkg.com/etphone.js"></script>
+<script src="https://unpkg.com/ethiopian-phone.js"></script>
 ```
 
 ## Usage
 
 ```js
-const etPhone = require('etphone');
+const etPhone = require('ethiopian-phone');
 
 let phone = '0911346652';
 

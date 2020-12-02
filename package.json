@@ -1,5 +1,5 @@
 {
-  "name": "etphone",
+  "name": "ethiopian-phone",
   "version": "1.4.5",
   "description": "Set of helper utilities to validate, parse and format Ethiopian phone numbers.",
   "main": "src/index.js",
@@ -19,7 +19,7 @@
 "license": "MIT",
 "repository": {
   "type": "git",
-  "url": "git+https://github.com/miketsg/etphone"
+  "url": "git+https://github.com/miketsg/ethiopian-phone"
 },
 "devDependencies": {
   "babel-core": "^6.1.18",
