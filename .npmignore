@@ -1,7 +1,7 @@
 node_modules
 coverage
 test
-dist
 .babelrc
 .eslintrc.js
+.nyc_output
 webpack.config.js
