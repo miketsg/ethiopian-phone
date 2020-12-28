@@ -37,7 +37,14 @@ const etPhone = require('ethiopian-phone')
 **Import to the browser from a CDN**
 
 ```html
-<script src="https://unpkg.com/ethiopian-phone.js"></script>
+<script src="https://unpkg.com/ethiopian-phone/dist/ethiopian-phone.min.js"></script>
+```
+## Note
+
+ If you only need to validate a phone number on an input form before submission, go with simple web best practices.
+
+```html
+<input type='tel' maxlength='10' pattern='^09\d{8}$' value='09' autocomplete='on' required>
 ```
 
 ## Usage
