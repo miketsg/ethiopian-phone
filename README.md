@@ -12,7 +12,7 @@
 * Works in the browser and Node.JS
 * <4 KB minified and gzipped.
 
-**Demo** : [https://etphone.herokuapp.com](https://etphone.herokuapp.com)
+**Demo** : [www.mike.et/ethiopian-phone-validator](https://www.mike.et/ethiopian-phone-validator)
 
 ## Install
 
